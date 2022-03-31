@@ -15,7 +15,7 @@ jobs:
           echo $GITHUB_SHA
           echo $GITHUB_REPOSITORY
           echo $GITHUB_WORKSPACE
-          echo "{{ github.token }}"
+          echo "${{ github.token }}"
       - name: Checkout_as_is
         uses: actions/checkout@v1
       - name: List Files After
