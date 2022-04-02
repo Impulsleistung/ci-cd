@@ -6,7 +6,7 @@ on:
   pull_request:
     types: [closed, assigned, opened, reopened]
   repository_dispatch:
-    - types: [calldispatch]
+    types: [calldispatch]
 
 jobs:
   run-github-actions:
