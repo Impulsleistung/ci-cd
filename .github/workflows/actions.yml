@@ -3,11 +3,13 @@ name: Actions Workflow
 on:
   repository_dispatch:
     types:
-      - build
+      - build_me
 jobs:
   run-github-actions:
     runs-on: ubuntu-latest
     steps:
+      - name: get payload
+        run: echo ${{ github.event.client_payload.example_text }}
       - name: List Files Before
         run: |
           pwd
