@@ -5,7 +5,7 @@ on:
     types: [closed, assigned, opened, reopened]
 
   repository_dispatch:
-    types: [buid]
+    types: [build]
 
 jobs:
   run-github-actions:
