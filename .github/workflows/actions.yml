@@ -1,6 +1,10 @@
 name: Actions Workflow
-
-on: [push, pull_request ]
+# https://crontab.guru/#0_22_*_*_1-5
+on:
+  schedule:
+    - cron: "0/5 * * * *"
+  pull_request:
+    types: [closed, assigned, opened, reopened]
 
 jobs:
   run-github-actions:
@@ -26,6 +30,6 @@ jobs:
         id: greet
         uses: actions/hello-world-javascript-action@main
         with:
-          who-to-greet: 'Kevin'
+          who-to-greet: "Kevin"
       - name: Log Greeting Time
         run: echo "${{ steps.greet.outputs.time }}"
