@@ -1,13 +1,13 @@
 name: Add file with random number
 
-on: [push]
+on: push
 
 jobs:
   create-random-file:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository branch
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
         run: |
             echo $RANDOM > random.txt
             git config user.name "GitHub Action"
