@@ -9,15 +9,15 @@ jobs:
       - name: List files in repository
         run: |
           pwd
-          ls -la
+          ls -l
       - name: Check out repository branch
         - uses: actions/checkout@v2
         - run: |
-          echo $RANDOM > random.txt
-          git config user.name "GitHub Action"
-          git config user.email "bot@bot.com"
-          git add random.txt
-          git commit -m "Add random number"
-          git push origin master
+            echo $RANDOM > random.txt
+            git config user.name "GitHub Action"
+            git config user.email "bot@bot.com"
+            git add random.txt
+            git commit -m "Add random number"
+            git push origin master
 
-          
+
