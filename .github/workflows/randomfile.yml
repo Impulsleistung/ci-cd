@@ -16,7 +16,4 @@ jobs:
           git push
       
       - name: List files in the repository
-      - run: |
-          git ls-files
-
-          
+      - run: git ls-files
