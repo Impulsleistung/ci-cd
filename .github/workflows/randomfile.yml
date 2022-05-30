@@ -5,6 +5,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Add file with random number
       - uses: actions/checkout@v3
       - run: |
           date > generated.txt
@@ -13,3 +14,8 @@ jobs:
           git add .
           git commit -m "generated"
           git push
+      
+      - name: List files in the repository
+      - run: |
+          git ls-files
+          
