@@ -1,0 +1,18 @@
+# This workflow adds a file with a random number to the repository.
+# The file is then committed to the repository.
+# The workflow then creates an issue on the commit.
+
+name: Create issue on commit
+
+on: [push]
+
+jobs:
+  create-random-file:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create random file
+        run: |
+          echo "Random number: $(($RANDOM % 100))" > random.txt
+          git add random.txt
+          git commit -m "Add random number"
+          git push origin master
