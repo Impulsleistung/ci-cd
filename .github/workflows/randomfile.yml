@@ -11,6 +11,13 @@ jobs:
           pwd
           ls -la
       - name: Check out repository branch
-        run: |
-          git checkout ${{ github.ref }}
-          ls -la
+        - uses: actions/checkout@v2
+        - run: |
+          echo $RANDOM > random.txt
+          git config user.name "GitHub Action"
+          git config user.email "bot@bot.com"
+          git add random.txt
+          git commit -m "Add random number"
+          git push origin master
+
+          
