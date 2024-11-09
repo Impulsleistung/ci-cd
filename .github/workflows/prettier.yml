@@ -13,7 +13,7 @@ jobs:
     runs-on: [self-hosted, Linux, X64] # Use your own GitHub runner
     permissions:
       contents: write # Needed for pushing changes
-      
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -34,4 +34,5 @@ jobs:
           branch: ${{ github.head_ref }}
           file_pattern: '**/*.{js,jsx,ts,py,tsx,json,css,scss,md,yaml,yml}'
           commit_options: '--no-verify'
-          push_options: '--force'
+          push_options: '--force-with-lease'
+
