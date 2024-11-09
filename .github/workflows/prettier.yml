@@ -10,13 +10,12 @@ on:
 
 jobs:
   add-and-commit:
-    runs-on: [self-hosted, Linux, X64] # Use your own GitHub runner
+    runs-on: [self-hosted, Linux, X64]
     permissions:
-      contents: write # Needed for pushing changes
+      contents: write
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
         with:
           ref: ${{ github.head_ref }}
           fetch-depth: 0
@@ -25,13 +24,24 @@ jobs:
         run: |
           git pull origin main
 
-      - name: Prettify code
+      - name: Cache Node Modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Format Code
         uses: creyD/prettier_action@v4.3
         with:
           prettier_options: --write **/*.{js,jsx,ts,py,tsx,json,css,scss,md,yaml,yml}
           commit_options: '--no-verify'
 
-      - name: Auto-commit changes
+      - name: Commit and Push Changes
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: "Style: Format code with Prettier"
@@ -39,4 +49,4 @@ jobs:
           file_pattern: '**/*.{js,jsx,ts,py,tsx,json,css,scss,md,yaml,yml}'
           commit_options: '--no-verify'
           push_options: '--force-with-lease'
-
+          if: steps.FormatCode.outputs.changed == 'true'
