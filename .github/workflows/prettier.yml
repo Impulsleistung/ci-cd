@@ -9,8 +9,11 @@ on:
       - main
 
 jobs:
-  prettier:
-    runs-on: ubuntu-latest
+  add-and-commit:
+    runs-on: [self-hosted, Linux, X64] # Use your own GitHub runner
+    permissions:
+      contents: write # Needed for pushing changes
+      
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
