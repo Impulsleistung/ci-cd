@@ -14,7 +14,6 @@ permissions:
 jobs:
   format:
     runs-on: [self-hosted, Linux, X64]
-    needs: [add-file]
 
     steps:
       - name: Checkout code
