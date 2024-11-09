@@ -2,25 +2,25 @@ name: Test Self-Hosted Runner
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   workflow_dispatch:
 
 jobs:
   test-runner:
     runs-on: [self-hosted, Linux, X64]
-    
+
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: Run a test command
-      run: |
-        echo "Hello from the self-hosted runner!"
-        echo "Runner name: ${{ runner.name }}"
-        echo "Runner OS: ${{ runner.os }}"
-        echo "Runner arch: ${{ runner.arch }}"
-        
-    - name: Check environment
-      run: |
-        pwd
-        ls -la
-        env
+      - uses: actions/checkout@v4
+
+      - name: Run a test command
+        run: |
+          echo "Hello from the self-hosted runner!"
+          echo "Runner name: ${{ runner.name }}"
+          echo "Runner OS: ${{ runner.os }}"
+          echo "Runner arch: ${{ runner.arch }}"
+
+      - name: Check environment
+        run: |
+          pwd
+          ls -la
+          env
