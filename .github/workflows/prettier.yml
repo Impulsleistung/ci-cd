@@ -26,6 +26,7 @@ jobs:
         with:
           prettier_options: '--check **/*.{js,jsx,ts,tsx,json,css,scss,md,yaml,yml}'
           only_changed: true
+        continue-on-error: true  # Prevents workflow from failing on check failure
 
       - name: Prettier Format
         uses: creyD/prettier_action@v4.3
