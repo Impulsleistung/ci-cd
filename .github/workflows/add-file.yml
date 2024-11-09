@@ -8,6 +8,7 @@ on:
 jobs:
   add-and-commit:
     runs-on: [self-hosted, Linux, X64] # Use your own GitHub runner
+    needs: [test-runner]
     permissions:
       contents: write # Needed for pushing changes
 
