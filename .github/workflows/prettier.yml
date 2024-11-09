@@ -21,15 +21,17 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Pull latest changes
-        run: git pull origin main  # Pull latest changes from remote main          
 
-      - name: Prettier Format
-        uses: creyD/prettier_action@v4.3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
         with:
-          prettier_options: '--write **/*.{js,jsx,ts,tsx,json,css,scss,md,yaml,yml}'
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          commit_message: "style: format code with prettier"
+          node-version: '16'
+
+      - name: Install Prettier
+        run: npm install --global prettier
+
+      - name: Run Prettier
+        run: prettier --write "**/*.{js,jsx,ts,tsx,json,css,scss,md,yaml,yml}"
 
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v4
