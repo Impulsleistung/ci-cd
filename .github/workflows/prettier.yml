@@ -13,8 +13,8 @@ permissions:
 
 jobs:
   format:
-    runs-on: ubuntu-latest
-    
+    runs-on: [self-hosted, Linux, X64]
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -24,7 +24,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: "16"
 
       - name: Install Prettier
         run: npm install --global prettier
@@ -36,4 +36,4 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: "Style: Format code with Prettier"
-          file_pattern: '**/*.{js,jsx,ts,tsx,json,css,scss,md,yaml,yml}'
+          file_pattern: "**/*.{js,jsx,ts,tsx,json,css,scss,md,yaml,yml}"
