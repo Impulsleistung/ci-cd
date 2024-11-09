@@ -21,6 +21,10 @@ jobs:
           ref: ${{ github.head_ref }}
           fetch-depth: 0
 
+      - name: Pull latest changes
+        run: |
+          git pull origin main
+
       - name: Prettify code
         uses: creyD/prettier_action@v4.3
         with:
