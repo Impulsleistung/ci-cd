@@ -33,5 +33,3 @@ jobs:
           only_changed: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-
