@@ -26,13 +26,11 @@ jobs:
         with:
           node-version: "16"
 
+      - name: Install Prettier
+        run: npm install --global prettier
+
       - name: Run Prettier
-        uses: creyD/prettier_action@v3.1
-        with:
-          prettier_options: --write **/*.{js,jsx,ts,tsx,json,css,scss,md,yaml,yml}
-          only_changed: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: prettier --write "**/*.{js,jsx,ts,tsx,json,css,scss,md,yaml,yml}"
 
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v4
