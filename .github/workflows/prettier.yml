@@ -18,20 +18,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
         with:
-          ref: ${{ github.head_ref }}
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '16'
 
-      - name: Install dependencies
-        run: npm install prettier
+      - name: Install Prettier
+        run: npm install --global prettier
 
       - name: Run Prettier
-        uses: creyD/prettier_action@v4.3
-        with:
-          prettier_options: --write **/*.{js,jsx,ts,tsx,json,css,scss,md,yaml,yml}
+        run: prettier --write "**/*.{js,jsx,ts,tsx,json,css,scss,md,yaml,yml}"
 
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v4
