@@ -21,18 +21,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Prettier Check
-        uses: creyD/prettier_action@v4.3
-        with:
-          prettier_options: '--check **/*.{js,jsx,ts,tsx,json,css,scss,md,yaml,yml}'
-          only_changed: true
-        continue-on-error: true  # Prevents workflow from failing on check failure
-
       - name: Prettier Format
         uses: creyD/prettier_action@v4.3
         with:
           prettier_options: '--write **/*.{js,jsx,ts,tsx,json,css,scss,md,yaml,yml}'
-          only_changed: true
           commit_message: "style: format code with prettier"
 
       - name: Commit changes
