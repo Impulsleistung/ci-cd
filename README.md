@@ -1,3 +1,1 @@
-# ci-cd
-GitHub Workflows
-##
+# CI/CD
