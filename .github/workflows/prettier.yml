@@ -8,45 +8,33 @@ on:
     branches:
       - main
 
-jobs:
-  add-and-commit:
-    runs-on: [self-hosted, Linux, X64]
-    permissions:
-      contents: write
+permissions:
+  contents: write
 
+jobs:
+  format:
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
         with:
           ref: ${{ github.head_ref }}
-          fetch-depth: 0
 
-      - name: Pull latest changes
-        run: |
-          git pull origin main
-
-      - name: Cache Node Modules
-        uses: actions/cache@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
         with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
+          node-version: '16'
 
-      - name: Install Dependencies
-        run: npm install
+      - name: Install dependencies
+        run: npm install prettier
 
-      - name: Format Code
+      - name: Run Prettier
         uses: creyD/prettier_action@v4.3
         with:
-          prettier_options: --write **/*.{js,jsx,ts,py,tsx,json,css,scss,md,yaml,yml}
-          commit_options: '--no-verify'
+          prettier_options: --write **/*.{js,jsx,ts,tsx,json,css,scss,md,yaml,yml}
 
-      - name: Commit and Push Changes
+      - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: "Style: Format code with Prettier"
-          branch: ${{ github.head_ref }}
-          file_pattern: '**/*.{js,jsx,ts,py,tsx,json,css,scss,md,yaml,yml}'
-          commit_options: '--no-verify'
-          push_options: '--force-with-lease'
-          if: steps.FormatCode.outputs.changed == 'true'
+          file_pattern: '**/*.{js,jsx,ts,tsx,json,css,scss,md,yaml,yml}'
