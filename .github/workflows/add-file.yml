@@ -19,7 +19,7 @@ jobs:
       - name: Create file with date-time name
         run: |
           FILENAME=$(date +'%Y-%m-%d-%H-%M-%S').txt
-          echo $FILENAME > $FILENAME
+          echo $FILENAME > files-are-generated/$FILENAME
 
       - name: Add random text to file
         run: |
