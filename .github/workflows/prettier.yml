@@ -27,11 +27,15 @@ jobs:
         with:
           node-version: '16'
 
+
+
       - name: Install Prettier
         run: npm install --global prettier
 
       - name: Run Prettier
-        run: prettier --write "**/*.{js,jsx,ts,tsx,json,css,scss,md,yaml,yml}"
+        run: |
+          git pull
+          prettier --write "**/*.{js,jsx,ts,tsx,json,css,scss,md,yaml,yml}"
 
       - name: Commit changes
         run: |
