@@ -1,4 +1,4 @@
-name: Docker FastAPI Image CI
+name: Docker Gradio Image CI
 
 on:
   push:
@@ -13,10 +13,10 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Build the Docker image
-        run: docker build ./fastapi-app --file ./fastapi-app/Dockerfile --tag imp2/standard-api:latest
+        run: docker build ./gradio-text-converter --file ./gradio-text-converter/Dockerfile --tag imp2/gradio-text-converter:latest
 
       - name: Login to Docker Hub
         run: docker login -u imp2 -p ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Push the Docker image
-        run: docker push imp2/standard-api:latest
+        run: docker push imp2/gradio-text-converter:latest
