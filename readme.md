@@ -67,7 +67,3 @@ Dieses Repository enthält vier Applikationen:
    ```
    docker run -d -p "36901:6901" --name quick --hostname quick imp2/ubuntu-firefox:latest
    ```
-
-## Hinweise
-- Alternativ können die GitHub Workflows zur CI/CD genutzt werden, die bei Push oder Pull Request auf den `main`-Branch automatisch die Builds und das Deployment auf Docker Hub auslösen.
-- Passe ggf. Portzuweisungen an, falls sie in Konflikt mit anderen lokalen Diensten stehen.
