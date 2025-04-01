@@ -69,4 +69,3 @@ Dieses Repository enthält fünf Applikationen:
    ```
    docker run -d -p "36901:6901" --name quick --hostname quick imp2/ubuntu-firefox:latest
    ```
-
