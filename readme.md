@@ -70,3 +70,13 @@ Dieses Repository enthält fünf Applikationen:
    docker run -d -p "36901:6901" --name quick --hostname quick imp2/ubuntu-firefox:latest
    ```
 
+### Sonar App
+1. Image bauen (ersetzen Sie YOUR_TOKEN durch Ihren Token oder setzen Sie die Umgebungsvariable PERPLEXITY_API_TOKEN):
+   ```
+   docker build ./sonar-app --file ./sonar-app/Dockerfile --tag imp2/sonar-app:latest --build-arg PERPLEXITY_API_TOKEN=YOUR_TOKEN
+   ```
+2. Container starten:
+   ```
+   docker run -p 7860:7860 -e PERPLEXITY_API_TOKEN=YOUR_TOKEN imp2/sonar-app:latest
+   ```
+
