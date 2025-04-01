@@ -1,43 +1,51 @@
 import gradio as gr
 import requests
-import os
-from dotenv import load_dotenv
+import json
 
-load_dotenv()
-
-PERPLEXITY_API_TOKEN = os.getenv("PERPLEXITY_API_TOKEN")
 PERPLEXITY_API_URL = "https://api.perplexity.ai/chat/completions"
 
 
-def generate_response(prompt):
+def predict(message, history, token):
+    prompt = (
+        message
+        + "\n\nPlease note that the output is limited to a maximum of 200 words. Please answer without including any links or citations."
+    )
+
     headers = {
         "accept": "application/json",
-        "authorization": f"Bearer {PERPLEXITY_API_TOKEN}",
+        "authorization": f"Bearer {token}",
         "content-type": "application/json",
     }
     payload = {
         "model": "sonar",
         "messages": [{"role": "user", "content": prompt}],
-        "max_tokens": 500,  # Add the max_tokens parameter here
+        "max_tokens": 500,
     }
     try:
         response = requests.post(PERPLEXITY_API_URL, headers=headers, json=payload)
-        response.raise_for_status()  # Raise HTTPError for bad responses (4xx or 5xx)
-        result = response.json()
-        return result["choices"][0]["message"]["content"]
+        response.raise_for_status()
+        return response.json()["choices"][0]["message"]["content"]
     except requests.exceptions.RequestException as e:
-        return f"Error: {e}"
-    except (KeyError, IndexError, TypeError) as e:
-        return f"Error parsing API response: {e}"
+        return f"Request Error: {e}"
+    except Exception as e:
+        return f"General Error: {e}"
 
 
-iface = gr.Interface(
-    fn=generate_response,
-    inputs=gr.Textbox(lines=5, placeholder="Enter your prompt here..."),
-    outputs=gr.Markdown(container=True, show_copy_button=True),
-    title="Sonar App by Kevin",
-    description="Use Sonar to get answers.",
-)
+def chat(message, history, token):
+    response = predict(message, history, token)
+    history.append({"role": "user", "content": message})
+    history.append({"role": "assistant", "content": response})
+    return history
 
-if __name__ == "__main__":
-    iface.launch(server_name="0.0.0.0", server_port=7860)
+
+with gr.Blocks() as demo:
+    token = gr.Textbox(
+        label="PERPLEXITY_API_TOKEN", type="password", placeholder="Enter your token"
+    )
+    chatbot = gr.Chatbot(type="messages")
+    msg = gr.Textbox()
+    clear = gr.ClearButton([msg, chatbot])
+
+    msg.submit(chat, [msg, chatbot, token], [chatbot])
+
+demo.launch(server_name="0.0.0.0", server_port=7860)

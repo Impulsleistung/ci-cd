@@ -71,12 +71,14 @@ Dieses Repository enthält fünf Applikationen:
    ```
 
 ### Sonar App
-1. Image bauen (ersetzen Sie YOUR_TOKEN durch Ihren Token oder setzen Sie die Umgebungsvariable PERPLEXITY_API_TOKEN):
+1. Image bauen:
    ```
-   docker build ./sonar-app --file ./sonar-app/Dockerfile --tag imp2/sonar-app:latest --build-arg PERPLEXITY_API_TOKEN=YOUR_TOKEN
+   docker build ./sonar-app --file ./sonar-app/Dockerfile --tag imp2/sonar-app:latest
    ```
 2. Container starten:
    ```
-   docker run -p 7860:7860 -e PERPLEXITY_API_TOKEN=YOUR_TOKEN imp2/sonar-app:latest
+   docker run -p 7860:7860 imp2/sonar-app:latest
+   # Hinweis: Geben Sie Ihren PERPLEXITY_API_TOKEN in der Benutzeroberfläche ein.
+   # Hinweis: Die App liefert Antworten mit maximal 200 Wörtern und ohne Links.
    ```
 

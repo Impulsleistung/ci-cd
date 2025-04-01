@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Build the Docker image
-        run: docker build ./sonar-app --file ./sonar-app/Dockerfile --tag imp2/sonar-app:latest --build-arg PERPLEXITY_API_TOKEN=${{ secrets.PERPLEXITY_API_TOKEN }}
+        run: docker build ./sonar-app --file ./sonar-app/Dockerfile --tag imp2/sonar-app:latest
       - name: Login to Docker Hub
         run: docker login -u imp2 -p ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Push the Docker image
