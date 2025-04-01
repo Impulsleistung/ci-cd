@@ -48,7 +48,7 @@ interface = gr.Interface(
     outputs=gr.File(label="Download Word Document"),
     title="Markdown to Word Converter",
     description="Convert markdown text to Microsoft Word document (DOCX)",
-    allow_flagging="never",
+    flagging_mode="never",
 )
 
 if __name__ == "__main__":

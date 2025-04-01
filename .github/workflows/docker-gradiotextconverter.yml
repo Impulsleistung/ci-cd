@@ -1,0 +1,19 @@
+name: Docker Gradio Text Converter Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: [self-hosted, Linux, X64]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build the Docker image
+        run: docker build ./gradio-text-converter --file ./gradio-text-converter/Dockerfile --tag imp2/gradio-text-converter:latest
+      - name: Login to Docker Hub
+        run: docker login -u imp2 -p ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Push the Docker image
+        run: docker push imp2/gradio-text-converter:latest

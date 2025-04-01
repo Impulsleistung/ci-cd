@@ -1,13 +1,15 @@
 # Projektübersicht
 
-Dieses Repository enthält vier Applikationen:
+Dieses Repository enthält fünf Applikationen:
 - FastAPI App
 - Gradio Text Converter
 - Static Website
 - Docker Firefox
+- LibreChat
 
 ## Voraussetzungen
 - Docker muss installiert und konfiguriert sein.
+- Docker Compose muss installiert sein.
 
 ## Aufbau und Ausführung
 
@@ -67,3 +69,4 @@ Dieses Repository enthält vier Applikationen:
    ```
    docker run -d -p "36901:6901" --name quick --hostname quick imp2/ubuntu-firefox:latest
    ```
+
