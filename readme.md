@@ -1,11 +1,12 @@
 # Projektübersicht
 
-Dieses Repository enthält fünf Applikationen:
+Dieses Repository enthält sechs Applikationen:
 - FastAPI App
 - Gradio Text Converter
 - Static Website
 - Docker Firefox
-- LibreChat
+- Sonar App
+- Open WebUI with Ollama
 
 ## Voraussetzungen
 - Docker muss installiert und konfiguriert sein.
@@ -81,4 +82,3 @@ Dieses Repository enthält fünf Applikationen:
    # Hinweis: Geben Sie Ihren PERPLEXITY_API_TOKEN in der Benutzeroberfläche ein.
    # Hinweis: Die App liefert Antworten mit maximal 200 Wörtern und ohne Links.
    ```
-
