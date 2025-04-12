@@ -1,0 +1,29 @@
+name: Docker Ollama WebUI Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: [self-hosted, Linux, X64]
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Build Docker Compose Images
+        run: docker-compose -f ./ollama-webui/docker-compose.yml build
+
+      - name: Login to Docker Hub
+        run: docker login -u imp2 -p ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Tag and Push Backend Image
+        run: |
+          docker tag ollama-webui_backend:latest imp2/open-webui-ollama:backend-latest
+          docker push imp2/open-webui-ollama:backend-latest
+
+      - name: Tag and Push Frontend Image
+        run: |
+          docker tag ollama-webui_frontend:latest imp2/open-webui-ollama:frontend-latest
+          docker push imp2/open-webui-ollama:frontend-latest

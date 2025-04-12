@@ -82,3 +82,19 @@ Dieses Repository enthält sechs Applikationen:
    # Hinweis: Geben Sie Ihren PERPLEXITY_API_TOKEN in der Benutzeroberfläche ein.
    # Hinweis: Die App liefert Antworten mit maximal 200 Wörtern und ohne Links.
    ```
+
+### Open WebUI with Ollama
+1. Images bauen (Frontend und Backend):
+   ```
+   docker-compose -f ./ollama-webui/docker-compose.yml build
+   ```
+2. Container starten:
+   ```
+   docker-compose -f ./ollama-webui/docker-compose.yml up
+   ```
+3. Zugriff auf die WebUI:
+   Öffne im Browser:
+   ```
+   http://localhost
+   ```
+   Hinweis: Beim ersten Start wird automatisch das Modell `gemma3:1b` heruntergeladen.
