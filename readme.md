@@ -21,12 +21,12 @@
 
 | Application           | External Port | Internal Port | Protocol |
 | --------------------- | ------------- | ------------- | -------- |
-| Static Website        | 80            | 80            | HTTP     |
-| Gradio Text Converter | 80            | 7860          | HTTP     |
-| FastAPI App           | 80            | 80            | HTTP     |
-| Docker Firefox        | 80            | 6901          | HTTP     |
-| Sonar App             | 80            | 7860          | HTTP     |
-| Ollama WebUI Frontend | 80            | 8080          | HTTP     |
+| Static Website        | 8081          | 80            | HTTP     |
+| Gradio Text Converter | 8082          | 7860          | HTTP     |
+| FastAPI App           | 8083          | 80            | HTTP     |
+| Docker Firefox        | 8084          | 6901          | HTTP     |
+| Sonar App             | 8085          | 7860          | HTTP     |
+| Ollama WebUI Frontend | 8086          | 8080          | HTTP     |
 | Ollama WebUI Backend  | 11434         | 11434         | HTTP     |
 
 ## Setup and Execution
@@ -38,11 +38,11 @@
    ```
 2. Start the container:
    ```bash
-   docker run -d -p 80:80 imp2/standard-website:latest
+   docker run -d -p 8081:80 imp2/standard-website:latest
    ```
 3. Access the website:
    ```
-   http://localhost
+   http://localhost:8081
    ```
 
 ### Gradio Text Converter
@@ -52,11 +52,11 @@
    ```
 2. Start the container:
    ```bash
-   docker run -d -p 80:7860 imp2/gradio-text-converter:latest
+   docker run -d -p 8082:7860 imp2/gradio-text-converter:latest
    ```
 3. Access the interface:
    ```
-   http://localhost
+   http://localhost:8082
    ```
 
 ### FastAPI App
@@ -66,15 +66,15 @@
    ```
 2. Start the container:
    ```bash
-   docker run -d -p 80:80 imp2/standard-api:latest
+   docker run -d -p 8083:80 imp2/standard-api:latest
    ```
 3. Test the API:
    ```bash
    # Test root endpoint
-   curl http://localhost/
+   curl http://localhost:8083/
    
    # Test items endpoint
-   curl "http://localhost/items/123?q=test"
+   curl "http://localhost:8083/items/123?q=test"
    ```
 
 ### Docker Firefox
@@ -86,14 +86,14 @@
    ```
 2. Start the container:
    ```bash
-   docker run -d -p 80:6901 \
+   docker run -d -p 8084:6901 \
      --name firefox \
      --hostname firefox \
      imp2/ubuntu-firefox:latest
    ```
 3. Access Firefox:
    ```
-   http://localhost
+   http://localhost:8084
    ```
    Note: Use the VNC password set via VNC_PW_KEVIN
 
@@ -104,11 +104,11 @@
    ```
 2. Start the container:
    ```bash
-   docker run -d -p 80:7860 imp2/sonar-app:latest
+   docker run -d -p 8085:7860 imp2/sonar-app:latest
    ```
 3. Access the interface:
    ```
-   http://localhost
+   http://localhost:8085
    ```
    Note: Enter your PERPLEXITY_API_TOKEN in the user interface
 
@@ -123,9 +123,8 @@
    ```
 3. Access the WebUI:
    ```
-   http://localhost
+   http://localhost:8086
    ```
-   Note: The model `gemma3:1b` is automatically downloaded on first start
 
 ## Docker Hub Publishing
 All images can be published to Docker Hub using:
