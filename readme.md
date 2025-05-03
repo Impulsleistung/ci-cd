@@ -10,92 +10,129 @@
 | [ollama-webui](https://github.com/Impulsleistung/ci-cd/tree/main/ollama-webui)                   | imp2/open-webui-ollama            | Open WebUI Bundled with Ollama |
 
 ## Prerequisites
-- Docker must be installed and configured.
-- Docker Compose must be installed.
+- Docker must be installed and configured
+- Docker Compose must be installed
+- Required environment variables:
+  - `DOCKERHUB_TOKEN` - For Docker Hub authentication
+  - `VNC_PW_KEVIN` - For Firefox VNC password
+  - `PERPLEXITY_API_TOKEN` - For Sonar App
+
+## Port Mappings
+
+| Application           | External Port | Internal Port | Protocol |
+| --------------------- | ------------- | ------------- | -------- |
+| Static Website        | 80            | 80            | HTTP     |
+| Gradio Text Converter | 7860          | 7860          | HTTP     |
+| FastAPI App           | 80            | 80            | HTTP     |
+| Docker Firefox        | 36901         | 6901          | HTTP     |
+| Sonar App             | 7860          | 7860          | HTTP     |
+| Ollama WebUI Frontend | 80            | 8080          | HTTP     |
+| Ollama WebUI Backend  | 11434         | 11434         | HTTP     |
 
 ## Setup and Execution
 
-### FastAPI App
+### Static Website
 1. Build the image:
-   ```
-   docker build ./fastapi-app --file ./fastapi-app/Dockerfile --tag imp2/standard-api:latest
+   ```bash
+   docker build -t imp2/standard-website:latest ./staticSite
    ```
 2. Start the container:
+   ```bash
+   docker run -d -p 80:80 imp2/standard-website:latest
    ```
-   docker run -p 80:80 imp2/standard-api:latest
+3. Access the website:
    ```
-3. Test the API:
-   Open a new terminal window and run the following command to test the API:
-   ```
-   curl http://localhost/
-   ```
-   Expected output:
-   ```json
-   {"message": "Hello World"}
-   ```
-   Additionally, you can test a specific endpoint:
-   ```
-   curl "http://localhost/items/123?q=test"
-   ```
-   Expected output:
-   ```json
-   {"item_id":123,"q":"test"}
+   http://localhost
    ```
 
 ### Gradio Text Converter
 1. Build the image:
-   ```
-   docker build ./gradio-text-converter --file ./gradio-text-converter/Dockerfile --tag imp2/gradio-text-converter:latest
+   ```bash
+   docker build -t imp2/gradio-text-converter:latest ./gradio-text-converter
    ```
 2. Start the container:
+   ```bash
+   docker run -d -p 7860:7860 imp2/gradio-text-converter:latest
    ```
-   docker run -p 7860:7860 imp2/gradio-text-converter:latest
+3. Access the interface:
+   ```
+   http://localhost:7860
    ```
 
-### Static Website
+### FastAPI App
 1. Build the image:
+   ```bash
+   docker build -t imp2/standard-api:latest ./fastapi-app
    ```
-   docker build ./staticSite --file ./staticSite/Dockerfile --tag imp2/standard-website:latest
+2. Start the container:
+   ```bash
+   docker run -d -p 80:80 imp2/standard-api:latest
    ```
-3. Start the container:
-   ```
-   docker run -p 80:80 imp2/standard-website:latest
+3. Test the API:
+   ```bash
+   # Test root endpoint
+   curl http://localhost/
+   
+   # Test items endpoint
+   curl "http://localhost/items/123?q=test"
    ```
 
 ### Docker Firefox
 1. Build the image:
-   ```
-   docker build ./docker-firefox --file ./docker-firefox/Dockerfile --tag imp2/ubuntu-firefox:latest
+   ```bash
+   docker build -t imp2/ubuntu-firefox:latest \
+     --build-arg VNC_PW_KEVIN=${VNC_PW_KEVIN} \
+     ./docker-firefox
    ```
 2. Start the container:
+   ```bash
+   docker run -d -p 36901:6901 \
+     --name firefox \
+     --hostname firefox \
+     imp2/ubuntu-firefox:latest
    ```
-   docker run -d -p "36901:6901" --name quick --hostname quick imp2/ubuntu-firefox:latest
+3. Access Firefox:
    ```
+   http://localhost:36901
+   ```
+   Note: Use the VNC password set via VNC_PW_KEVIN
 
 ### Sonar App
 1. Build the image:
-   ```
-   docker build ./sonar-app --file ./sonar-app/Dockerfile --tag imp2/sonar-app:latest
+   ```bash
+   docker build -t imp2/sonar-app:latest ./sonar-app
    ```
 2. Start the container:
+   ```bash
+   docker run -d -p 7860:7860 imp2/sonar-app:latest
    ```
-   docker run -p 7860:7860 imp2/sonar-app:latest
-   # Note: Enter your PERPLEXITY_API_TOKEN in the user interface.
-   # Note: The app provides answers with a maximum of 200 words and without links.
+3. Access the interface:
    ```
+   http://localhost:7860
+   ```
+   Note: Enter your PERPLEXITY_API_TOKEN in the user interface
 
 ### Open WebUI with Ollama
-1. Build images (Frontend and Backend):
-   ```
-   docker-compose -f ./ollama-webui/docker-compose.yml build
+1. Build the images:
+   ```bash
+   docker compose -f ./ollama-webui/docker-compose.yml build
    ```
 2. Start the containers:
-   ```
-   docker-compose -f ./ollama-webui/docker-compose.yml up
+   ```bash
+   docker compose -f ./ollama-webui/docker-compose.yml up -d
    ```
 3. Access the WebUI:
-   Open in the browser:
    ```
    http://localhost
    ```
-   Note: The model `gemma3:1b` is automatically downloaded on the first start.
+   Note: The model `gemma3:1b` is automatically downloaded on first start
+
+## Docker Hub Publishing
+All images can be published to Docker Hub using:
+```bash
+# Login to Docker Hub
+docker login -u imp2 -p ${DOCKERHUB_TOKEN}
+
+# Push the image (replace TAG with the specific image tag)
+docker push imp2/TAG:latest
+```
