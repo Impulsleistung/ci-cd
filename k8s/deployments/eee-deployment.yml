@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eee-deployment
+  namespace: eee-ns
+  labels:
+    app: eee
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: eee
+  template:
+    metadata:
+      labels:
+        app: eee
+    spec:
+      containers:
+        - name: sonar-app
+          image: imp2/sonar-app:latest
+          ports:
+            - containerPort: 7860

@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: bbb-service
+  namespace: bbb-ns
+spec:
+  selector:
+    app: bbb
+  ports:
+    - protocol: TCP
+      port: 7860
+      targetPort: 7860
+  type: ClusterIP

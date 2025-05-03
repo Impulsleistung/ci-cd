@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bbb-deployment
+  namespace: bbb-ns
+  labels:
+    app: bbb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bbb
+  template:
+    metadata:
+      labels:
+        app: bbb
+    spec:
+      containers:
+        - name: gradio-text-converter
+          image: imp2/gradio-text-converter:latest
+          ports:
+            - containerPort: 7860
