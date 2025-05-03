@@ -22,10 +22,10 @@
 | Application           | External Port | Internal Port | Protocol |
 | --------------------- | ------------- | ------------- | -------- |
 | Static Website        | 80            | 80            | HTTP     |
-| Gradio Text Converter | 7860          | 7860          | HTTP     |
+| Gradio Text Converter | 80            | 7860          | HTTP     |
 | FastAPI App           | 80            | 80            | HTTP     |
-| Docker Firefox        | 36901         | 6901          | HTTP     |
-| Sonar App             | 7860          | 7860          | HTTP     |
+| Docker Firefox        | 80            | 6901          | HTTP     |
+| Sonar App             | 80            | 7860          | HTTP     |
 | Ollama WebUI Frontend | 80            | 8080          | HTTP     |
 | Ollama WebUI Backend  | 11434         | 11434         | HTTP     |
 
@@ -52,11 +52,11 @@
    ```
 2. Start the container:
    ```bash
-   docker run -d -p 7860:7860 imp2/gradio-text-converter:latest
+   docker run -d -p 80:7860 imp2/gradio-text-converter:latest
    ```
 3. Access the interface:
    ```
-   http://localhost:7860
+   http://localhost
    ```
 
 ### FastAPI App
@@ -86,14 +86,14 @@
    ```
 2. Start the container:
    ```bash
-   docker run -d -p 36901:6901 \
+   docker run -d -p 80:6901 \
      --name firefox \
      --hostname firefox \
      imp2/ubuntu-firefox:latest
    ```
 3. Access Firefox:
    ```
-   http://localhost:36901
+   http://localhost
    ```
    Note: Use the VNC password set via VNC_PW_KEVIN
 
@@ -104,11 +104,11 @@
    ```
 2. Start the container:
    ```bash
-   docker run -d -p 7860:7860 imp2/sonar-app:latest
+   docker run -d -p 80:7860 imp2/sonar-app:latest
    ```
 3. Access the interface:
    ```
-   http://localhost:7860
+   http://localhost
    ```
    Note: Enter your PERPLEXITY_API_TOKEN in the user interface
 
