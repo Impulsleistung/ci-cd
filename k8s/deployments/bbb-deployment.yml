@@ -20,3 +20,10 @@ spec:
           image: imp2/gradio-text-converter:latest
           ports:
             - containerPort: 7860
+          # Add readiness probe to ensure the app is ready
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 7860
+            initialDelaySeconds: 10
+            periodSeconds: 5

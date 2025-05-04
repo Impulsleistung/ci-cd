@@ -35,10 +35,10 @@
 
 Once the script completes successfully, you can access the applications using the following URLs in your web browser:
 
-*   Static Website: `http://74.220.28.127`
-*   Gradio Text Converter: `http://74.220.28.127/k2`
-*   Docker Firefox: `http://74.220.28.127/k3`
-*   Sonar App: `http://74.220.28.127/k4`
+*   Static Website: `http://74.220.28.127/` (Port 8081)
+*   Gradio Text Converter: `http://74.220.28.127/app2` (Port 8082)
+*   Docker Firefox: `http://74.220.28.127/app3` (Port 8084)
+*   Sonar App: `http://74.220.28.127/app4` (Port 8085)
 
 Replace `<LOAD_BALANCER_IP>` with the actual IP address output by the deployment script.
 

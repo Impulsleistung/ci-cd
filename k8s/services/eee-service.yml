@@ -8,6 +8,6 @@ spec:
     app: eee
   ports:
     - protocol: TCP
-      port: 7860
+      port: 8085
       targetPort: 7860
   type: ClusterIP

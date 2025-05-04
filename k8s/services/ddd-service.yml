@@ -8,6 +8,6 @@ spec:
     app: ddd
   ports:
     - protocol: TCP
-      port: 6901
+      port: 8084
       targetPort: 6901
   type: ClusterIP

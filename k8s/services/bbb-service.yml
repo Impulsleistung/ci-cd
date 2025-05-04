@@ -8,6 +8,6 @@ spec:
     app: bbb
   ports:
     - protocol: TCP
-      port: 7860
+      port: 8082
       targetPort: 7860
   type: ClusterIP
