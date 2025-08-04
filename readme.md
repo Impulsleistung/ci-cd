@@ -9,6 +9,26 @@
 | [sonar-app](https://github.com/Impulsleistung/ci-cd/tree/main/sonar-app)                         | imp2/sonar-app                    | A Perplexity Sonar App         |
 | [ollama-webui](https://github.com/Impulsleistung/ci-cd/tree/main/ollama-webui)                   | imp2/open-webui-ollama            | Open WebUI Bundled with Ollama |
 
+## CI/CD Workflows
+
+Für jedes Projekt existiert ein eigener GitHub Actions Workflow, der automatisch bei jedem Push oder Pull Request auf den `main`-Branch ausgelöst wird. Die Workflows bauen die jeweiligen Docker Images und pushen sie zu Docker Hub.
+
+### StaticSite CI/CD
+
+- Workflow-Datei: `.github/workflows/docker-staticSite.yml`
+- Aktionen:
+  - Checkout des Codes
+  - Docker Image Build aus `./staticSite`
+  - Login zu Docker Hub mit `${{ secrets.DOCKERHUB_TOKEN }}`
+  - Push des Images nach Docker Hub: `imp2/standard-website:latest`
+- Auslöser: Push oder Pull Request auf `main`
+
+Die anderen Projekte (z.B. Gradio, FastAPI, Firefox, Sonar App, Ollama WebUI) sind analog aufgebaut und nutzen jeweils eigene Workflow-Dateien im `.github/workflows` Verzeichnis.
+
+## CI/CD Status
+
+[![StaticSite Build Status](https://github.com/Impulsleistung/ci-cd/actions/workflows/docker-staticSite.yml/badge.svg?branch=main)](https://github.com/Impulsleistung/ci-cd/actions/workflows/docker-staticSite.yml)
+
 ## Prerequisites
 - Docker must be installed and configured
 - Docker Compose must be installed
@@ -38,7 +58,14 @@
    ```
 2. Start the container:
    ```bash
+   # Standard Run
    docker run -d -p 8081:80 imp2/standard-website:latest
+
+   # Mit benanntem Container
+   docker run -d --name staticSite -p 8081:80 imp2/standard-website:latest
+
+   # Mit automatischem Restart
+   docker run -d --restart unless-stopped -p 8081:80 imp2/standard-website:latest
    ```
 3. Access the website:
    ```
@@ -135,3 +162,43 @@ docker login -u imp2 -p ${DOCKERHUB_TOKEN}
 # Push the image (replace TAG with the specific image tag)
 docker push imp2/TAG:latest
 ```
+
+## StaticSite Dockerfile
+
+Das `staticSite` Projekt nutzt eine mehrstufige Dockerfile:
+
+- **Build-Stage:** Baut die statische Seite mit Vite.
+- **Production-Stage:** Dient die gebaute Seite mit nginx aus. Die Konfiguration (`nginx.conf`) sorgt dafür, dass auch bei Nutzung von React Router alle Routen korrekt aufgelöst werden.
+
+**Dockerfile Beispiel:**
+```Dockerfile
+FROM node:20-alpine AS builder
+WORKDIR /app
+COPY package.json package-lock.json* pnpm-lock.yaml* yarn.lock* ./
+RUN npm install
+COPY . .
+RUN npm run build
+
+FROM nginx:alpine
+WORKDIR /usr/share/nginx/html
+COPY --from=builder /app/dist .
+COPY nginx.conf /etc/nginx/nginx.conf
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
+```
+
+**nginx.conf Beispiel:**
+```nginx
+server {
+    listen 80;
+    server_name localhost;
+    root /usr/share/nginx/html;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+}
+```
+
+Der Build und Push des Images erfolgt automatisch über den GitHub Actions Workflow `.github/workflows/docker-staticSite.yml`.
