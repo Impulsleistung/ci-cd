@@ -3,17 +3,34 @@ name: Docker Sonar App Image CI
 on:
   push:
     branches: [ "main" ]
+    paths:
+      - 'sonar-app/**'
+      - '.github/workflows/docker-sonar.yml'
   pull_request:
     branches: [ "main" ]
+    paths:
+      - 'sonar-app/**'
+      - '.github/workflows/docker-sonar.yml'
 
 jobs:
   build:
-    runs-on: [self-hosted, Linux, X64]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    
     steps:
-      - uses: actions/checkout@v3
-      - name: Build the Docker image
-        run: docker build ./sonar-app --file ./sonar-app/Dockerfile --tag imp2/sonar-app:latest
+      - uses: actions/checkout@v4
+
       - name: Login to Docker Hub
-        run: docker login -u imp2 -p ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Push the Docker image
-        run: docker push imp2/sonar-app:latest
+        uses: docker/login-action@v3
+        with:
+          username: imp2
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./sonar-app
+          push: true
+          tags: imp2/sonar-app:latest
