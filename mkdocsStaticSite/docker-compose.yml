@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  mkdocs:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./docs:/app/docs
+      - ./mkdocs.yml:/app/mkdocs.yml
+    restart: unless-stopped
+    environment:
+      - PYTHONUNBUFFERED=1
+
+  # Optional: Add nginx for production deployment
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./site:/usr/share/nginx/html:ro
+    depends_on:
+      - mkdocs
+    restart: unless-stopped
+    profiles:
+      - production

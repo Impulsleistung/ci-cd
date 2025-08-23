@@ -1,0 +1,36 @@
+name: Docker FastAPI Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'fastapi-app/**'
+      - '.github/workflows/docker-fastapi.yml'
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - 'fastapi-app/**'
+      - '.github/workflows/docker-fastapi.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: imp2
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./fastapi-app
+          push: true
+          tags: imp2/standard-api:latest
