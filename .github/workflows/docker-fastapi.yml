@@ -3,20 +3,34 @@ name: Docker FastAPI Image CI
 on:
   push:
     branches: [ "main" ]
+    paths:
+      - 'fastapi-app/**'
+      - '.github/workflows/docker-fastapi.yml'
   pull_request:
     branches: [ "main" ]
+    paths:
+      - 'fastapi-app/**'
+      - '.github/workflows/docker-fastapi.yml'
 
 jobs:
   build:
-    runs-on: [self-hosted, Linux, X64]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    
     steps:
-      - uses: actions/checkout@v3
-
-      - name: Build the Docker image
-        run: docker build ./fastapi-app --file ./fastapi-app/Dockerfile --tag imp2/standard-api:latest
+      - uses: actions/checkout@v4
 
       - name: Login to Docker Hub
-        run: docker login -u imp2 -p ${{ secrets.DOCKERHUB_TOKEN }}
+        uses: docker/login-action@v3
+        with:
+          username: imp2
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Push the Docker image
-        run: docker push imp2/standard-api:latest
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./fastapi-app
+          push: true
+          tags: imp2/standard-api:latest
